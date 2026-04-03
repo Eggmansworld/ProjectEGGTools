@@ -1,0 +1,30 @@
+comtype saint_seya
+idstring "CNPFVR"
+get VER short
+get FSIZE long
+get DATAOFF long
+get FILEZ long
+for i = 0 < FILEZ
+	getct NAME string 0x2C
+	putarray 0 -1 NAME
+	getct DESC string 0x2C
+next i
+
+goto DATAOFF
+for i = 0 < FILEZ
+	get COMP byte
+	get TYPE byte
+	get SIZE long
+	savepos OFF
+	getarray NAME 0 i
+	if COMP == 1
+		get DECS long
+		savepos OFF
+		math SIZE - 4
+		clog NAME OFF SIZE DECS
+	else
+		log NAME OFF SIZE
+	endif
+	math OFF + SIZE
+	goto OFF
+next i
